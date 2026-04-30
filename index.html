@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Texy · UI 视觉稿</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f12;
+    --panel: #15171b;
+    --panel-2: #1c1f24;
+    --line: rgba(255,255,255,.08);
+    --text: #ffffff;
+    --text-2: rgba(255,255,255,.66);
+    --text-3: rgba(255,255,255,.42);
+    --accent: #E62121;
+    --accent-soft: rgba(230,33,33,.18);
+    --success: #4ED98C;
+    --warning: #FFC033;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #050608; color: var(--text); font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif; }
+  body {
+    min-height: 100vh;
+    padding: 48px 24px 80px;
+    background: radial-gradient(1200px 600px at 20% 0%, rgba(230,33,33,.08), transparent 50%),
+                radial-gradient(900px 500px at 100% 100%, rgba(50,90,200,.06), transparent 60%),
+                #050608;
+  }
+  .header {
+    max-width: 1280px; margin: 0 auto 40px;
+    display: flex; align-items: baseline; justify-content: space-between;
+  }
+  .header h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; }
+  .header h1 span { color: var(--accent); }
+  .header .meta { color: var(--text-3); font-size: 14px; }
+
+  .frames {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+  }
+  .frame { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .frame-title {
+    font-size: 13px; color: var(--text-2); letter-spacing: 1px; text-transform: uppercase;
+  }
+  .iphone {
+    width: 360px; height: 760px;
+    background: var(--bg);
+    border-radius: 50px;
+    box-shadow: 0 0 0 6px #1a1c20, 0 30px 70px -20px rgba(0,0,0,.6);
+    position: relative; overflow: hidden;
+    color: var(--text);
+    font-family: "Inter", sans-serif;
+    padding: 56px 20px 28px;
+    display: flex; flex-direction: column;
+  }
+  .iphone .notch {
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 30px; background: #000; border-radius: 20px; z-index: 5;
+  }
+  .iphone .status-bar {
+    position: absolute; top: 18px; left: 0; right: 0;
+    display: flex; justify-content: space-between; padding: 0 24px;
+    font-size: 13px; font-weight: 600; z-index: 6;
+  }
+
+  /* 通用元素 */
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; font-size: 11px; }
+  .pill.green { background: rgba(78,217,140,.18); color: var(--success); }
+  .pill.yellow { background: rgba(255,192,51,.18); color: var(--warning); }
+  .pill.red { background: var(--accent-soft); color: var(--accent); }
+  .h-title { font-size: 22px; font-weight: 700; }
+  .h-sub { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+  .btn {
+    width: 100%; padding: 14px; border-radius: 16px;
+    background: var(--accent); color: #fff; font-weight: 600;
+    text-align: center; font-size: 15px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn.ghost {
+    background: transparent; border: 1px solid var(--line); color: var(--text);
+  }
+  .btn.disabled { background: var(--panel-2); color: var(--text-3); }
+  .row { display: flex; align-items: center; }
+  .icon-circle {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--panel-2);
+  }
+
+  /* 步骤指示器 */
+  .step-bar { display: flex; gap: 6px; }
+  .step-bar div { flex: 1; height: 4px; border-radius: 2px; background: var(--panel-2); }
+  .step-bar div.active { background: var(--accent); }
+
+  /* Onboarding */
+  .onboard-art {
+    flex: 1; display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at center, rgba(230,33,33,.25), transparent 60%);
+    margin: 0 -20px;
+    position: relative;
+  }
+  .onboard-art .car {
+    font-size: 92px;
+    filter: drop-shadow(0 0 30px rgba(230,33,33,.6));
+  }
+  .onboard-art .ring {
+    position: absolute; border: 1px solid rgba(230,33,33,.35);
+    border-radius: 50%;
+  }
+  .onboard-art .ring.r1 { width: 260px; height: 260px; }
+  .onboard-art .ring.r2 { width: 180px; height: 180px; }
+
+  /* BLE 雷达 */
+  .radar { position: relative; height: 200px; display: flex; align-items: center; justify-content: center; }
+  .radar .ring {
+    position: absolute; border: 1px solid rgba(230,33,33,.3); border-radius: 50%;
+  }
+  .radar .ring.r1 { width: 90px; height: 90px; }
+  .radar .ring.r2 { width: 150px; height: 150px; opacity: .7; }
+  .radar .ring.r3 { width: 210px; height: 210px; opacity: .4; }
+  .radar .core {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+  }
+
+  /* VIN */
+  .vin-input {
+    border: 1px solid var(--success); border-radius: 16px; padding: 16px;
+    background: var(--panel); display: flex; align-items: center;
+    font-family: "JetBrains Mono", monospace; font-size: 18px;
+    letter-spacing: 1.5px;
+  }
+  .vin-input .check { margin-left: auto; color: var(--success); font-size: 22px; }
+
+  /* NFC visual */
+  .nfc-stage {
+    height: 220px; border-radius: 22px;
+    background: linear-gradient(135deg, var(--panel-2), var(--panel));
+    border: 1px solid var(--line);
+    position: relative;
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+  }
+  .nfc-stage .phone { width: 80px; height: 130px; border: 1px solid var(--line); border-radius: 14px; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6px; }
+  .nfc-stage .arrows { color: var(--accent); display: flex; gap: 4px; font-size: 18px; }
+  .nfc-stage .card-key {
+    width: 110px; height: 70px; border-radius: 8px;
+    background: linear-gradient(180deg, #1d1d20, #2a2a2e);
+    border: 1px solid #444; padding: 6px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    color: #fff; font-size: 9px; font-family: "JetBrains Mono", monospace;
+  }
+  .nfc-stage .card-key .logo { letter-spacing: 1px; font-weight: 700; }
+
+  /* 控制中心 */
+  .hero {
+    background: linear-gradient(135deg, var(--panel) 0%, #1a1d22 100%);
+    border-radius: 22px; padding: 18px;
+    border: 1px solid var(--line);
+  }
+  .hero .pct { font-size: 42px; font-weight: 700; line-height: 1; }
+  .hero .range { font-size: 12px; color: var(--text-2); margin-top: 4px; }
+  .hero .car-side { font-size: 70px; opacity: 0.85; filter: drop-shadow(0 0 14px rgba(230,33,33,.4)); }
+  .battery {
+    height: 12px; border-radius: 6px; background: var(--panel-2);
+    position: relative; margin-top: 14px;
+  }
+  .battery .fill {
+    height: 100%; border-radius: 6px;
+    background: linear-gradient(90deg, var(--success), var(--accent));
+    width: 78%;
+  }
+  .battery .limit {
+    position: absolute; top: -3px; height: 18px; width: 2px;
+    background: rgba(255,255,255,.6); left: 90%;
+  }
+
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .ctrl-card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+    padding: 12px; min-height: 86px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .ctrl-card .ico { font-size: 18px; }
+  .ctrl-card .t { font-size: 13px; font-weight: 600; }
+  .ctrl-card .s { font-size: 11px; color: var(--text-2); }
+  .ctrl-card.success .ico { color: var(--success); }
+  .ctrl-card.warning .ico { color: var(--warning); }
+  .ctrl-card.red .ico { color: var(--accent); }
+
+  /* 空调旋钮 */
+  .climate { display: flex; gap: 16px; align-items: center; padding-top: 14px; }
+  .dial {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: conic-gradient(from 270deg, var(--success), var(--accent) 280deg, var(--panel-2) 280deg, var(--panel-2));
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .dial::after {
+    content: ""; position: absolute; inset: 8px; border-radius: 50%;
+    background: var(--panel);
+  }
+  .dial-text { position: relative; z-index: 1; text-align: center; }
+  .dial-text .v { font-size: 26px; font-weight: 700; }
+  .dial-text .l { font-size: 10px; color: var(--text-3); }
+
+  .toggle {
+    width: 40px; height: 22px; border-radius: 12px; background: var(--accent);
+    position: relative;
+  }
+  .toggle::after {
+    content: ""; position: absolute; right: 2px; top: 2px;
+    width: 18px; height: 18px; border-radius: 50%; background: #fff;
+  }
+
+  .scroll-hint { color: var(--text-3); font-size: 10px; text-align: center; margin-top: 8px; }
+
+  /* BLE 行 */
+  .ble-row {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  }
+  .ble-row.selected { background: var(--accent-soft); border-color: var(--accent); }
+  .ble-row .name { font-weight: 600; font-size: 14px; }
+  .ble-row .rssi { font-family: "JetBrains Mono", monospace; font-size: 10px; color: var(--text-3); }
+  .signal { display: flex; align-items: flex-end; gap: 2px; margin-left: auto; }
+  .signal i { width: 3px; background: var(--success); border-radius: 1px; display: inline-block; }
+  .signal i:nth-child(1) { height: 6px; }
+  .signal i:nth-child(2) { height: 10px; }
+  .signal i:nth-child(3) { height: 14px; }
+  .signal i:nth-child(4) { height: 18px; background: var(--panel-2); }
+
+  .vehicle-card-row {
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .vehicle-art {
+    width: 72px; height: 72px; border-radius: 16px;
+    background: var(--accent-soft);
+    display: flex; align-items: center; justify-content: center; font-size: 30px;
+  }
+  .vehicle-meta .name { font-size: 17px; font-weight: 700; }
+  .vehicle-meta .sub { font-size: 12px; color: var(--text-2); }
+  .vehicle-meta .vin { font-family: "JetBrains Mono", monospace; font-size: 10px; color: var(--text-3); margin-top: 4px; }
+
+  .legend {
+    max-width: 1280px; margin: 56px auto 0; padding: 24px 28px;
+    background: rgba(255,255,255,.02); border: 1px solid var(--line); border-radius: 18px;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+    color: var(--text-2); font-size: 13px;
+  }
+  .legend h3 { color: var(--text); font-size: 13px; margin-bottom: 6px; }
+  .legend code { background: var(--panel); padding: 1px 6px; border-radius: 4px; font-size: 11px; color: #f3a; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Tex<span>y</span> · iOS 蓝牙控制 UI 视觉稿</h1>
+  <div class="meta">SwiftUI · iOS 16+ · 深色优先</div>
+</div>
+
+<div class="frames">
+
+  <!-- 1. Onboarding -->
+  <div class="frame">
+    <div class="frame-title">01 · 欢迎引导</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="status-bar"><span>9:41</span><span>● 5G  100%</span></div>
+      <div class="onboard-art">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="car">🚗</div>
+      </div>
+      <div style="padding: 0 4px 4px;">
+        <div class="h-title" style="font-size: 36px; margin-bottom: 6px;">Texy</div>
+        <div class="h-sub">把您的特斯拉装进口袋<br>蓝牙 · 解锁 · 空调 · 充电 一指掌控</div>
+      </div>
+      <div style="margin-top: 18px;">
+        <div class="btn">＋  绑定我的特斯拉</div>
+        <div class="scroll-hint">🔒 您的车辆密钥仅保存在本机 Secure Enclave</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. OAuth -->
+  <div class="frame">
+    <div class="frame-title">02 · 账号登录</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="status-bar"><span>9:41</span><span>● 5G  100%</span></div>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="width: 32px; height: 32px; background: var(--panel-2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">×</div>
+        <div style="font-weight: 600;">绑定车辆</div>
+        <div style="width: 32px;"></div>
+      </div>
+      <div style="margin-top: 14px;">
+        <div class="step-bar"><div class="active"></div><div></div><div></div><div></div></div>
+        <div style="font-size: 13px; color: var(--text-2); margin-top: 10px;">1 / 4 · 登录特斯拉账号</div>
+      </div>
+      <div style="margin-top: 22px;">
+        <div class="h-title">登录特斯拉账号</div>
+        <div class="h-sub" style="margin-top: 6px;">通过特斯拉官方授权获取您的车辆信息</div>
+      </div>
+      <div class="card" style="margin-top: 18px;">
+        <div class="row" style="gap: 8px; margin-bottom: 10px;">
+          <span style="color: var(--accent);">🛡</span>
+          <span style="font-weight: 600; font-size: 15px;">Tesla 账号登录</span>
+        </div>
+        <div class="h-sub">即将打开 auth.tesla.com 安全网页登录,完成后将自动返回 App。</div>
+      </div>
+      <div style="margin-top: 14px; font-size: 12px; color: var(--text-2);">已识别账号下的车辆</div>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+        <div class="card" style="border-color: var(--accent); background: var(--accent-soft);">
+          <div class="vehicle-card-row">
+            <div class="vehicle-art">🚙</div>
+            <div class="vehicle-meta" style="flex:1;">
+              <div class="name">我的 Model Y</div>
+              <div class="sub">Model Y · Pearl White</div>
+              <div class="vin">VIN ...XX123</div>
+            </div>
+            <div style="color: var(--accent); font-size: 22px;">●</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="vehicle-card-row">
+            <div class="vehicle-art">🚗</div>
+            <div class="vehicle-meta" style="flex:1;">
+              <div class="name">Model 3 Performance</div>
+              <div class="sub">Model 3 · Midnight Silver</div>
+              <div class="vin">VIN ...XX456</div>
+            </div>
+            <div style="color: var(--text-3); font-size: 20px;">○</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: auto; padding-top: 16px;">
+        <div class="btn">下一步 →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. BLE Scan -->
+  <div class="frame">
+    <div class="frame-title">03 · 蓝牙扫描</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="status-bar"><span>9:41</span><span>● 5G  100%</span></div>
+      <div class="step-bar"><div class="active"></div><div class="active"></div><div></div><div></div></div>
+      <div style="font-size: 13px; color: var(--text-2); margin-top: 10px;">2 / 4 · 蓝牙连接车辆</div>
+
+      <div style="margin-top: 18px;">
+        <div class="h-title">蓝牙连接车辆</div>
+        <div class="h-sub" style="margin-top: 6px;">请站在车辆 5 米范围内开始扫描</div>
+      </div>
+
+      <div class="radar">
+        <div class="ring r1"></div>
+        <div class="ring r2"></div>
+        <div class="ring r3"></div>
+        <div class="core">🚗</div>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 4px;">
+        <div style="font-size: 13px; color: var(--text-2);">扫描中… 2 辆</div>
+        <div class="pill red">⏹ 停止</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
+        <div class="ble-row selected">
+          <div class="icon-circle" style="color: var(--accent);">📡</div>
+          <div>
+            <div class="name">S1a2b3c4d5e6</div>
+            <div class="rssi">信号 -54 dBm</div>
+          </div>
+          <div class="signal"><i></i><i></i><i></i><i></i></div>
+          <span style="color: var(--accent); margin-left: 8px;">●</span>
+        </div>
+        <div class="ble-row">
+          <div class="icon-circle" style="color: var(--accent);">📡</div>
+          <div>
+            <div class="name">S7f8e9d0c1b2</div>
+            <div class="rssi">信号 -71 dBm</div>
+          </div>
+          <div class="signal"><i></i><i></i><i style="background: var(--panel-2);"></i><i></i></div>
+          <span style="color: var(--text-3); margin-left: 8px;">○</span>
+        </div>
+      </div>
+
+      <div style="margin-top: auto; padding-top: 16px;">
+        <div class="btn">下一步 →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. VIN Input -->
+  <div class="frame">
+    <div class="frame-title">04 · VIN 校对</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="status-bar"><span>9:41</span><span>● 5G  100%</span></div>
+      <div class="step-bar"><div class="active"></div><div class="active"></div><div class="active"></div><div></div></div>
+      <div style="font-size: 13px; color: var(--text-2); margin-top: 10px;">3 / 4 · 输入 VIN 码</div>
+
+      <div style="margin-top: 18px;">
+        <div class="h-title">输入 VIN 码</div>
+        <div class="h-sub" style="margin-top: 6px;">在挡风玻璃下沿或车辆设置中查看 17 位 VIN 码</div>
+      </div>
+
+      <div class="card" style="margin-top: 18px;">
+        <div style="font-size: 11px; color: var(--text-3); margin-bottom: 8px;">VIN</div>
+        <div class="vin-input">
+          5YJYGDEE5MF0XX123
+          <span class="check">✓</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 11px;">
+          <span style="color: var(--success); font-family: 'JetBrains Mono', monospace;">17 / 17</span>
+          <span style="color: var(--accent);">使用账号 VIN  ...XX123</span>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 14px;">
+        <div style="font-weight: 600; font-size: 13px; margin-bottom: 10px;">ⓘ VIN 码的位置</div>
+        <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--text-2);">
+          <div>① 挡风玻璃左下角的金属铭牌</div>
+          <div>② B 柱(驾驶座侧门框)上的标签</div>
+          <div>③ 车辆中控屏 设置 → 软件 → 详细信息</div>
+        </div>
+      </div>
+
+      <div style="margin-top: auto; padding-top: 16px;">
+        <div class="btn">下一步 →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. NFC Pair -->
+  <div class="frame">
+    <div class="frame-title">05 · NFC 配对</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="status-bar"><span>9:41</span><span>● 5G  100%</span></div>
+      <div class="step-bar"><div class="active"></div><div class="active"></div><div class="active"></div><div class="active"></div></div>
+      <div style="font-size: 13px; color: var(--text-2); margin-top: 10px;">4 / 4 · 钥匙卡 NFC 配对</div>
+
+      <div style="margin-top: 18px;">
+        <div class="h-title">钥匙卡 NFC 配对</div>
+        <div class="h-sub" style="margin-top: 6px;">将钥匙卡贴近 iPhone 顶部完成最后一步</div>
+      </div>
+
+      <div class="nfc-stage" style="margin-top: 18px;">
+        <div class="phone">
+          <span style="color: var(--accent); font-size: 24px;">📡</span>
+          <span style="color: var(--text-3); font-size: 11px;">Tap</span>
+        </div>
+        <div class="arrows">›››</div>
+        <div class="card-key">
+          <div class="logo">TESLA</div>
+          <div style="text-align: right;">📡</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 14px;">
+        <div class="row" style="gap: 10px;">
+          <span style="color: var(--accent);">⏳</span>
+          <span style="font-size: 14px;">贴近 iPhone 顶部…</span>
+        </div>
+        <div style="height: 1px; background: var(--line); margin: 12px 0;"></div>
+        <div style="font-weight: 600; font-size: 13px; margin-bottom: 6px;">配对原理</div>
+        <div class="h-sub">App 在 Secure Enclave 中生成一对 P-256 密钥,通过 BLE 上传公钥并由钥匙卡签名授权,完成后您的 iPhone 即可作为车钥匙使用。</div>
+      </div>
+
+      <div style="margin-top: auto; padding-top: 16px; display: flex; flex-direction: column; gap: 10px;">
+        <div class="btn">📡  开始 NFC 配对</div>
+        <div class="btn ghost">暂时跳过(只能使用受限指令)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. 车辆控制中心 -->
+  <div class="frame">
+    <div class="frame-title">06 · 蓝牙控制中心</div>
+    <div class="iphone">
+      <div class="notch"></div>
+      <div class="status-bar"><span>9:41</span><span>● 5G  100%</span></div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size: 14px;">‹</div>
+        <div style="font-weight: 600;">我的 Model Y</div>
+        <div>⋯</div>
+      </div>
+
+      <div class="hero" style="margin-top: 14px;">
+        <div style="display: flex; justify-content: space-between;">
+          <div class="pill green">📡 蓝牙已连接 · -58 dBm</div>
+          <div class="pill yellow">🔓 已解锁</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 14px;">
+          <div>
+            <div class="pct">78%</div>
+            <div class="range">续航 412 km</div>
+          </div>
+          <div class="car-side">🚙</div>
+        </div>
+        <div class="battery">
+          <div class="fill"></div>
+          <div class="limit"></div>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top: 14px;">
+        <div class="ctrl-card warning">
+          <div class="ico">🔓</div>
+          <div class="t">未上锁</div>
+          <div class="s">点按上锁</div>
+        </div>
+        <div class="ctrl-card red">
+          <div class="ico">📦</div>
+          <div class="t">前备箱</div>
+          <div class="s">关闭</div>
+        </div>
+        <div class="ctrl-card red">
+          <div class="ico">📦</div>
+          <div class="t">后备箱</div>
+          <div class="s">关闭</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 12px;">
+        <div class="row" style="justify-content: space-between;">
+          <div style="font-weight: 600; font-size: 15px;">🌡  空调</div>
+          <div class="toggle"></div>
+        </div>
+        <div class="climate">
+          <div class="dial">
+            <div class="dial-text">
+              <div class="v">22</div>
+              <div class="l">°C 目标</div>
+            </div>
+          </div>
+          <div style="flex:1; display:flex; flex-direction:column; gap: 8px; font-size: 13px;">
+            <div class="row" style="justify-content: space-between;"><span style="color: var(--text-3);">车内温度</span><b>23.5°C</b></div>
+            <div class="row" style="justify-content: space-between;"><span style="color: var(--text-3);">运行状态</span><b>运行中</b></div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
+              <span class="pill" style="background: var(--panel-2); color: var(--text-2); font-family: 'JetBrains Mono', monospace;">18°</span>
+              <span class="pill" style="background: var(--panel-2); color: var(--text-2); font-family: 'JetBrains Mono', monospace;">20°</span>
+              <span class="pill" style="background: var(--accent-soft); color: var(--accent); font-family: 'JetBrains Mono', monospace;">22°</span>
+              <span class="pill" style="background: var(--panel-2); color: var(--text-2); font-family: 'JetBrains Mono', monospace;">24°</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 12px;">
+        <div class="row" style="justify-content: space-between;">
+          <div style="font-weight: 600; font-size: 15px; color: var(--warning);">⚡ 充电</div>
+          <span class="pill yellow">🔋 充电中</span>
+        </div>
+        <div class="battery" style="margin-top: 12px;">
+          <div class="fill"></div>
+          <div class="limit"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--text-2);">
+          <span>当前 78%</span>
+          <span>限额 90%</span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;">
+          <div class="btn ghost" style="padding: 12px;"><span style="color: var(--warning);">⏸</span> 停止充电</div>
+          <div class="btn ghost" style="padding: 12px;"><span style="color: var(--accent);">🔌</span> 充电口</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="legend">
+  <div>
+    <h3>颜色 Token</h3>
+    Tesla Red <code>#E62121</code> · Success <code>#4ED98C</code> · Warning <code>#FFC033</code><br>
+    Background <code>#0d0f12</code> · Panel <code>#15171b</code>
+  </div>
+  <div>
+    <h3>字体</h3>
+    标题 SF Rounded Bold · 正文 SF Rounded Regular · 数据 SF Mono Medium
+  </div>
+  <div>
+    <h3>圆角</h3>
+    Card <code>18</code> · Hero <code>22</code> · Pill <code>999</code>
+  </div>
+  <div>
+    <h3>iOS 实现要点</h3>
+    SwiftUI · CoreBluetooth · CoreNFC · ASWebAuthenticationSession · CryptoKit
+  </div>
+</div>
+
+</body>
+</html>
